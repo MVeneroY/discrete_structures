@@ -24,11 +24,15 @@ def read_xml_test():
 
 
 def useless_test():
-    dfa1 = read_dfa("useless.xml", input_dir="data")
-    print(f'Useless accept states?\t{dfa1.is_useless()}')
+    dfa = read_dfa("useless.xml", input_dir="data")
+    useless, useless_a = dfa.useless_states()
+    print(f'Useless states:\t\t{useless}')
+    print(f'Useless accept states:\t{useless_a}')
 
-    dfa2 = read_dfa("dfa.xml", input_dir="data")
-    print(f'Useless accept states?\t{dfa2.is_useless()}')
+    dfa = read_dfa("dfa.xml", input_dir="data")
+    useless, useless_a = dfa.useless_states()
+    print(f'Useless states:\t\t{useless}')
+    print(f'Useless accept states:\t{useless_a}')
 
 def main():
     read_xml_test()

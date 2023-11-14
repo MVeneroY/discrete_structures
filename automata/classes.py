@@ -86,11 +86,7 @@ class FiniteAutomaton():
         
         return True
     
-    # # TODO: implement BFS approach
-    # def hasUselessStates(self) -> bool:
-    #   pass
-
-    def is_useless(self):
+    def useless_states(self) -> (List[State], List[State]):
         marked_dict = {s:False for s in self.states}
         queue = []
 
@@ -118,6 +114,10 @@ class FiniteAutomaton():
 
         # print(marked_dict)
         # print(self.q_a)
-        for s in self.q_a:
-            if not marked_dict[s]: return True
-        return False
+        useless = []
+        useless_a = []
+        for s in self.states:
+            if not marked_dict[s] and s != self.q_0:
+                useless.append(s)
+                if s in self.q_a: useless_a.append(s)
+        return useless, useless_a
