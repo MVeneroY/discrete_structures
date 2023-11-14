@@ -1,6 +1,6 @@
 from classes import State, FiniteAutomaton
 from xml.etree import ElementTree as ET
-from csv import DictReader
+# from csv import DictReader
 import os
 
 # def read_automaton(file_name="dfa.csv", input_dir="."):
@@ -28,7 +28,26 @@ import os
 #                 Sigma.append(_sigma)
 
 
-def read_dfa(file_name="dfa.xml", input_dir="."):
+def read_dfa(file_name="dfa.xml", input_dir=".") -> FiniteAutomaton:
+    '''
+    Read a DFA from an XML file
+
+    Parameters
+    ----------
+    file_name : str
+        file name, including file extension
+    input_dir : str
+        file directory relative to environment
+
+    Returns
+    -------
+    FiniteAutomaton
+
+    Raises
+    ------
+    Exception
+        when the xml file doesn't follow the dfa format
+    '''
     states = []
     q_0 = None
     accept = []
@@ -41,22 +60,24 @@ def read_dfa(file_name="dfa.xml", input_dir="."):
     for child in root:
         if child.tag == 'states':
             for s in child:
-                if s.attrib['name'] in [s.name for s in states]: return
+                if s.attrib['name'] in [s.name for s in states]:
+                    raise Exception(f'State with name {s.attrib["name"]} already exists in {states}')
                 state = State(s.attrib['name'], s.attrib['accepting']=='true')
-                # if state == []: q_0 = state
                 if state.isAccept(): accept.append(state)
                 states.append(state)
         
         if child.tag == 'q_start':
-            if child.attrib['name'] not in [s.name for s in states]: return # raise an error?
+            if child.attrib['name'] not in [s.name for s in states]: 
+                raise Exception(f'Start state {child.attrib["name"]} not among the states provided in {states}')
             for s in states:
-                if s.name == child.attrib['name']: q_0 = s
-                elif s.name == child.attrib['name'] and q_0 != None: return # Only 1 accept state
-
+                if s.name == child.attrib['name'] and q_0 is None: q_0 = s
+                elif s.name == child.attrib['name']: 
+                    raise Exception(f'Deterministic finite automata can have only one start state. (Other is {q_0})')
 
         if child.tag == 'alphabet':
             for symbol in child:
-                if symbol.attrib['name'] in [s for s in alphabet]: return
+                if symbol.attrib['name'] in [s for s in alphabet]: 
+                    raise Exception(f'Symbol {symbol.attrib["name"]} already defined in alphabet {alphabet}')
                 alphabet.append(symbol.attrib['name'])
 
         if child.tag =='transitions':
