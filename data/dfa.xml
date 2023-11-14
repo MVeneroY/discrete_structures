@@ -19,6 +19,6 @@
         <transition q1="q_2" symbol="0" q2="q_3"/>
         <transition q1="q_2" symbol="1" q2="q_2"/>
         <transition q1="q_3" symbol="0" q2="q_2"/>
-        <transition q1="q_3" symbol="2" q2="q_2"/>
+        <transition q1="q_3" symbol="1" q2="q_2"/>
     </transitions>
 </dfa>

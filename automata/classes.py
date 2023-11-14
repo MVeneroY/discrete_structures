@@ -19,12 +19,38 @@ class FiniteAutomaton():
 
     curr_state = None
 
-    def __init__(self, states: List[State], sigma: List[str], delta, q_0: State, q_a: List[State]):
+    def __init__(self, states: List[State], sigma: List[str], delta: Dict[tuple,str], q_0: State, q_a: List[State]):
+        '''
+        init function
+
+        Parameters
+        ----------
+        states : [State]
+            a list of the states included in the DFA
+        sigma : [str]
+            a list of the symbols included in the DFA's alphabet
+        delta : { (str, str): str }
+            a dictionary, where the key is a (q1, symbol) tuple and the value is q2
+        q_0 : State
+            the starting state
+        q_a : [State]
+            an array of accepting states
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        None
+        '''
+            
         self.states = states
         self.sigma = sigma
         self.delta = delta
         self.q_0 = q_0
         self.q_a = q_a
+            
 
     def compute(self, input: str) -> bool:
         '''Attempt to compute string input. Return True if automaton reaches an accepting state'''
@@ -59,3 +85,39 @@ class FiniteAutomaton():
                 return False
         
         return True
+    
+    # # TODO: implement BFS approach
+    # def hasUselessStates(self) -> bool:
+    #   pass
+
+    def is_useless(self):
+        marked_dict = {s:False for s in self.states}
+        queue = []
+
+        queue.append(self.q_0)
+        # marked_dict[self.q_0] = True
+
+        while queue:
+            root = queue.pop(0)
+            # print(f'checking state {root}')
+            # print(f'{root}', 'accepts' if root.isAccept() else 'does not accept')
+
+            transitions = []
+            for d in self.delta:
+                if d[0] != root.name: continue
+                # print('transitions', end=' ')
+                for transition in self.delta[d]:
+                    # print(transition, end=' ')
+                    transitions.append(transition)
+                # print()
+
+            for leaf in [s for s in self.states if s.name in transitions]:
+                if not marked_dict[leaf]:
+                    queue.append(leaf)
+                    marked_dict[leaf] = True
+
+        # print(marked_dict)
+        # print(self.q_a)
+        for s in self.q_a:
+            if not marked_dict[s]: return True
+        return False

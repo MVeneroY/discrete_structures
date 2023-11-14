@@ -43,15 +43,16 @@ def read_dfa(file_name="dfa.xml", input_dir="."):
             for s in child:
                 if s.attrib['name'] in [s.name for s in states]: return
                 state = State(s.attrib['name'], s.attrib['accepting']=='true')
-                if state == []: q_0 = state
+                # if state == []: q_0 = state
                 if state.isAccept(): accept.append(state)
                 states.append(state)
-                
         
         if child.tag == 'q_start':
             if child.attrib['name'] not in [s.name for s in states]: return # raise an error?
             for s in states:
-                if s.name == child.attrib['name']: s.accept = True
+                if s.name == child.attrib['name']: q_0 = s
+                elif s.name == child.attrib['name'] and q_0 != None: return # Only 1 accept state
+
 
         if child.tag == 'alphabet':
             for symbol in child:
