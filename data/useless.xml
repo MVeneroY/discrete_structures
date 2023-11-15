@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dfa>
+<automaton>
     <states>
         <state name="q_0" accepting="false"/>
         <state name="q_1" accepting="false"/>
@@ -26,4 +26,4 @@
         <transition q1="q_5" symbol="0" q2="q_3"/>
         <transition q1="q_5" symbol="1" q2="q_1"/>
     </transitions>
-</dfa>
+</automaton>

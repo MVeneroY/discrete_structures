@@ -1,0 +1,31 @@
+<!-- NFA for (0 | 1)* 1 (0 | 1)^3 -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<automaton>
+    <states>
+        <state name="q_0" accepting="false"/>
+        <state name="q_1" accepting="false"/>
+        <state name="q_2" accepting="false"/>
+        <state name="q_3" accepting="false"/>
+        <state name="q_4" accepting="true"/>
+    </states>
+
+    <q_start name="q_0"/>
+
+    <alphabet>
+        <symbol name="0"/>
+        <symbol name="1"/>
+    </alphabet>
+
+    <transitions>
+        <transition q1="q_0" symbol="0" q2="q_0"/>
+        <transition q1="q_0" symbol="1" q2="q_0"/>
+        <transition q1="q_0" symbol="1" q2="q_1"/>
+        <transition q1="q_1" symbol="0" q2="q_2"/>
+        <transition q1="q_1" symbol="1" q2="q_2"/>
+        <transition q1="q_2" symbol="0" q2="q_3"/>
+        <transition q1="q_2" symbol="1" q2="q_3"/>
+        <transition q1="q_3" symbol="0" q2="q_4"/>
+        <transition q1="q_3" symbol="1" q2="q_4"/>
+    </transitions>
+</automaton>

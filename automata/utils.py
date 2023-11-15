@@ -82,9 +82,14 @@ def read_dfa(file_name="dfa.xml", input_dir=".") -> FiniteAutomaton:
 
         if child.tag =='transitions':
             for d in child:
-                if (d.attrib['q1'],d.attrib['symbol']) in delta.keys():
-                    delta[(d.attrib['q1'],d.attrib['symbol'])].append(d.attrib['q2'])
+                q1 = None
+                q2 = None
+                for s in states:
+                    if s.name == d.attrib['q1']: q1 = s
+                    if s.name == d.attrib['q2']: q2 = s
+                if (q1,d.attrib['symbol']) in delta.keys():
+                    delta[(q1,d.attrib['symbol'])].append(q2)
                 else:
-                    delta[(d.attrib['q1'],d.attrib['symbol'])] = [d.attrib['q2']]
+                    delta[(q1,d.attrib['symbol'])] = [q2]
 
     return FiniteAutomaton(states, alphabet, delta, q_0, accept)
