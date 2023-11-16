@@ -1,5 +1,7 @@
 # from classes import State, FiniteAutomaton
 from utils import read_dfa
+import re
+import random
 
 def read_xml_test():
     try:
@@ -34,24 +36,40 @@ def useless_test():
     print(f'Useless states:\t\t{useless}')
     print(f'Useless accept states:\t{useless_a}')
 
-def nfa_test():
-    # nfa = read_dfa('nfa.xml', 'data')
-    # print(f'nfa is deterministic:\t{nfa.isDeterministic()}')
-    # s = '001'
-    # print(f'accepts string {s}:\t{nfa.nfa_computation(s)}')
 
-    # TODO: add tests checking agains regex
+def nfa_test():
     nfa = read_dfa('nfa2.xml', 'data')
     print(f'nfa is deterministic:\t{nfa.isDeterministic()}')
+
+    mismatches = []
+    for _ in range(100_000):
+        s = ''.join(random.choices(['0','1'], k=random.randint(1,50)))
+        
+        nfa_result = nfa.nfa_computation(s)
+        rgx_result = re.fullmatch(r'[0|1]*1[0|1][0|1][0|1]', s) is not None
+        if nfa_result != rgx_result:
+            mismatches.append(s)
+    if len(mismatches) > 0:
+        print('mismatches')
+        print(len(mismatches))
+        for m in mismatches: print(m)
+    else:
+        print('All tests successful')
+    
+
+def regex_test():
     s = '1110101'
-    print(f'accepts string {s}:\t{nfa.nfa_computation(s)}')
+    print(re.fullmatch(r'[0|1]*1[0|1][0|1][0|1]', s))
     s = '1010101010'
-    print(f'accepts string {s}:\t{nfa.nfa_computation(s)}')
+    print(re.fullmatch(r'[0|1]*1[0|1][0|1][0|1]', s).group() == s)
+
 
 def main():
     # read_xml_test()
     # useless_test()
     nfa_test()
+    # regex_test()
+
 
 if __name__ == '__main__':
     main()

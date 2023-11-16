@@ -15,6 +15,7 @@ class State():
     def isAccept(self) -> bool: 
         return self.accept
 
+# TODO: Add empty string transitions on NFA
 class FiniteAutomaton():
 
     curr_state = None
