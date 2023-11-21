@@ -1,0 +1,1 @@
+[![wakatime](https://wakatime.com/badge/github/MVeneroY/discrete_structures.svg)](https://wakatime.com/badge/github/MVeneroY/discrete_structures)
