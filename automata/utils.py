@@ -28,9 +28,9 @@ import os
 #                 Sigma.append(_sigma)
 
 
-def read_dfa(file_name="dfa.xml", input_dir=".") -> FiniteAutomaton:
+def read_automaton(file_name="dfa.xml", input_dir=".") -> FiniteAutomaton:
     '''
-    Read a DFA from an XML file
+    Read a finite automaton from an XML file
 
     Parameters
     ----------
@@ -46,7 +46,7 @@ def read_dfa(file_name="dfa.xml", input_dir=".") -> FiniteAutomaton:
     Raises
     ------
     Exception
-        when the xml file doesn't follow the dfa format
+        when the xml file doesn't follow the automaton format
     '''
     states = []
     q_0 = None
@@ -80,7 +80,7 @@ def read_dfa(file_name="dfa.xml", input_dir=".") -> FiniteAutomaton:
                     raise Exception(f'Symbol {symbol.attrib["name"]} already defined in alphabet {alphabet}')
                 alphabet.append(symbol.attrib['name'])
 
-        if child.tag =='transitions':
+        if child.tag == 'transitions':
             for d in child:
                 q1 = None
                 q2 = None

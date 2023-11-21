@@ -1,5 +1,7 @@
 from typing import List, Dict
 
+E_STRING = r"\varepsilon"
+
 class State():
 
     def __init__(self, name: str="", accept: bool=False):
@@ -16,6 +18,8 @@ class State():
         return self.accept
 
 # TODO: Add empty string transitions on NFA
+# Functions that should implement e-strings:
+# nfa_computation, is_deterministic, useless_states, nfa_to_dfa
 class FiniteAutomaton():
 
     curr_state = None
@@ -204,4 +208,4 @@ class FiniteAutomaton():
     def NFA_to_DFA(self):
         if self.isDeterministic():
             raise Exception('Finite automaton is already deterministic')
-        
+        raise NotImplementedError()
