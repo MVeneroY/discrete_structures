@@ -1,4 +1,4 @@
-from classes import State, FiniteAutomaton
+from .classes import State, FiniteAutomaton
 from xml.etree import ElementTree as ET
 # from csv import DictReader
 import os

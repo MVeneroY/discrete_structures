@@ -1,6 +1,6 @@
 from typing import List, Dict
 
-E_STRING = r"\varepsilon"
+E_STRING = "epsilon"
 
 class State():
 
@@ -24,7 +24,11 @@ class FiniteAutomaton():
 
     curr_state = None
 
-    def __init__(self, states: List[State], sigma: List[str], delta: Dict[tuple,State], q_0: State, q_a: List[State]):
+    def __init__(self, states: List[State], 
+                 sigma: List[str], 
+                 delta: Dict[tuple,State], 
+                 q_0: State, 
+                 q_a: List[State]):
         '''
         init function
 
@@ -131,8 +135,10 @@ class FiniteAutomaton():
         for symbol in input:
             q_next_list = []
             q_from_list = []
-            for (q_curr,_symbol),q_next in self.delta.items():
+            for (q_curr,_symbol), q_next in self.delta.items():
                 if tokens[q_curr] and symbol == _symbol:
+                    # after adding next states, see if any of them has a e-transition
+                    # if it does, add the state transitioned into to q_next_list
                     q_next_list.extend([q for q in q_next if q not in q_next_list])
                     q_from_list.append(q_curr)
             # print(f'transitions on symbol {symbol} would occur from: {q_from_list}')
@@ -161,7 +167,7 @@ class FiniteAutomaton():
     #     print(f'possible transitions on symbol {symbol}: {next_list}')
     #     return next_list
 
-    def isDeterministic(self):
+    def isDeterministic(self) -> bool:
         '''Return whether automaton is deterministic or not'''
         for v in self.delta.values():
             if len(v) > 1:
@@ -169,6 +175,8 @@ class FiniteAutomaton():
         
         return True
     
+    # useless_States should already support e-string transitions
+    # TODO: corroborate
     def useless_states(self) -> (List[State], List[State]):
         marked_dict = {s:False for s in self.states}
         queue = []
@@ -183,14 +191,14 @@ class FiniteAutomaton():
 
             transitions = []
             for d in self.delta:
-                if d[0] != root.name: continue
-                # print('transitions', end=' ')
+                if d[0] != root: continue
                 for transition in self.delta[d]:
                     # print(transition, end=' ')
                     transitions.append(transition)
                 # print()
+            # print('transitions', transitions)
 
-            for leaf in [s for s in self.states if s.name in transitions]:
+            for leaf in [s for s in self.states if s in transitions]:
                 if not marked_dict[leaf]:
                     queue.append(leaf)
                     marked_dict[leaf] = True
